@@ -1,0 +1,1 @@
+# Page pour scanner les billets
