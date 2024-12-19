@@ -31,38 +31,27 @@
   </template>
   
   <script>
-  import { ref, onMounted } from 'vue';
-  import axios from 'axios';
-  
-  export default {
-    name: 'EventsList',
-    setup() {
-      const events = ref([]); // Liste des événements
-      const loading = ref(true); // État de chargement
-      const error = ref(null); // Message d'erreur
-  
-      const fetchEvents = async () => {
-        try {
-          loading.value = true;
-          const response = await axios.get('https://popular-friendship-c117528b75.strapiapp.com/api/events');
-          events.value = response.data.data; // Récupère les données des événements
-        } catch (err) {
-          error.value = 'Failed to fetch events. Please try again later.';
-        } finally {
-          loading.value = false;
-        }
-      };
-  
-      onMounted(fetchEvents); // Appel API au montage du composant
-  
-      return {
-        events,
-        loading,
-        error,
-      };
-    },
-  };
-  </script>
+import { useEventStore } from '@/stores/eventStore';
+import { mapState, mapActions } from 'pinia';
+
+export default {
+  name: 'EventCard',
+  computed: {
+    // Liaison avec le store via mapState
+    ...mapState(useEventStore, ['events', 'loading', 'error']),
+  },
+  methods: {
+    // Liaison avec les actions du store
+    ...mapActions(useEventStore, ['fetchEvents']),
+  },
+  mounted() {
+    // Charge les événements lors du montage
+    if (!this.events.length) {
+      this.fetchEvents();
+    }
+  },
+};
+</script>
   
   <style scoped>
 /* title composant*/
@@ -80,7 +69,7 @@
   
   /* Style des cartes d'événements */
   .event-card {
-    background-color: #11379e;
+    background-color: #000000;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 1rem;
@@ -98,7 +87,8 @@
   .event-title {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
-    color: #ddd0d0;
+    color: #c70808;
+    text-transform:uppercase ;
   }
   
   /* Erreur */
