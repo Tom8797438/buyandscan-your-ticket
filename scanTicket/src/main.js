@@ -6,11 +6,13 @@ import { createPinia } from 'pinia';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-// Importation des icônes gratuites de FontAwesome
-import { faCalendarPlus, faTicketAlt, faQrcode, faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { QrcodeStream } from 'vue-qrcode-reader';
 
+// Importation des icônes gratuites de FontAwesome
+import { faCalendarPlus, faTicketAlt, faQrcode, faCalendar,faSignOutAlt  } from '@fortawesome/free-solid-svg-icons';
+import { useAuthStore } from '@/stores/authStore';
 // Ajouter les icônes nécessaires à la bibliothèque
-library.add(faCalendarPlus, faTicketAlt, faQrcode, faCalendar);
+library.add(faCalendarPlus, faTicketAlt, faQrcode, faCalendar, faSignOutAlt);
 
 import App from './App.vue';
 import router from './router';
@@ -24,6 +26,9 @@ app.use(router);
 
 // Enregistre le composant FontAwesome globalement
 app.component('font-awesome-icon', FontAwesomeIcon);
+app.component('QrcodeStream', QrcodeStream);
+const authStore = useAuthStore();
+authStore.autoLogin();
 
 // Monte l'application
 app.mount('#app');
